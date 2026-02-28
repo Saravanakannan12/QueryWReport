@@ -1,6 +1,9 @@
 package com.application.weather.metricsApp.Metric;
 
+import jakarta.persistence.AttributeOverride;
+import jakarta.persistence.AttributeOverrides;
 import jakarta.persistence.Column;
+import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -9,9 +12,11 @@ import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.util.Objects;
 
@@ -20,30 +25,18 @@ import java.util.Objects;
 @AllArgsConstructor
 @Builder
 @Entity
-@Table(name= "")
+@EqualsAndHashCode(onlyExplicitlyIncluded = true, callSuper = false)
+@Table(name= "SENSOR_METRIC")
 public class Metric {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long metricId;
+    @EmbeddedId
+    @AttributeOverrides({@AttributeOverride(name = "sensorId", column = @Column(name = "SENSOR_ID", nullable = false)),
+            @AttributeOverride(name = "metricName", column = @Column(name = "METRIC_NAME", nullable = false)),
+            @AttributeOverride(name = "recordedTime", column = @Column(name = "RECORDED_TIME", nullable = false)),
+            })
+    private SensorMetricId id;
 
-    @Column(nullable = false)
-    private String metricName;
-
-    @Column(nullable = false)
+    @Column(name= "METRIC_VALUE", nullable = false)
     private double metricValue;
-
-    @Column(nullable = false)
-    private ZonedDateTime recordedDate;
-
-    @Column(nullable = false)
-    private Long sensorId;
-
-    @PrePersist
-    public void prePopulate(){
-        if(Objects.isNull(recordedDate)) {
-            recordedDate = ZonedDateTime.now();
-        }
-    }
 
 }

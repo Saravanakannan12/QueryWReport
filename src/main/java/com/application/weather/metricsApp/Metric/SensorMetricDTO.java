@@ -4,6 +4,8 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
+
 @Component
 @Data
 public class SensorMetricDTO {
@@ -15,6 +17,8 @@ public class SensorMetricDTO {
     private String metricName;
 
     @NotBlank(message = "Metric value is required")
-    private String metricValue;
+    private double metricValue;
+
+    private LocalDateTime recordedTime;
 
 }
