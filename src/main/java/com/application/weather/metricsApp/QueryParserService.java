@@ -1,24 +1,24 @@
 package com.application.weather.metricsApp;
 
 import com.application.weather.metricsApp.Metric.QueryResult;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import dev.langchain4j.model.chat.ChatModel;
 import dev.langchain4j.model.input.Prompt;
 import dev.langchain4j.model.input.PromptTemplate;
-import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import tools.jackson.databind.ObjectMapper;
+
 
 import java.util.Map;
 
 @Service
-@Data
 @RequiredArgsConstructor
 public class QueryParserService {
 
-    private ChatModel chatModel;
+    private final ChatModel chatModel;
 
-    private ObjectMapper objectMapper;
+    private final ObjectMapper objectMapper;
 
     private static final String SYSTEM_PROMPT = """
                 <|begin_of_text|><|start_header_id|>system<|end_header_id|>You are an expert in extracting Natural language. Clearly watch for multiple values in this query.
@@ -40,7 +40,7 @@ public class QueryParserService {
                 user"
             """;
 
-    public QueryResult parseQuery(String userQuery) {
+    public QueryResult parseQuery(String userQuery) throws JsonProcessingException {
 
         PromptTemplate promptTemplate = PromptTemplate.from(SYSTEM_PROMPT);
         Prompt promptToLLMModel = promptTemplate.apply(Map.of("userQuery", userQuery));
