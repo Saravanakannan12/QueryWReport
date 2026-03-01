@@ -9,6 +9,7 @@ import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -17,6 +18,7 @@ import org.springframework.stereotype.Component;
 @AllArgsConstructor
 @Builder
 @Entity
+@Getter
 @EqualsAndHashCode(onlyExplicitlyIncluded = true, callSuper = false)
 @Table(name= "SENSOR_METRIC")
 public class Metric {

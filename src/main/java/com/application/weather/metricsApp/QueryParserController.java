@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.sql.SQLException;
+
 
 @RequiredArgsConstructor
 @Slf4j
@@ -21,9 +23,9 @@ public class QueryParserController {
     private final QueryParserService queryParserService;
 
     @GetMapping("/userQuery")
-    public void parseUserQuery(@RequestBody @NotBlank(message = "Please enter a valid query") String userQuery) throws JsonProcessingException {
+    public void parseUserQuery(@RequestBody @NotBlank(message = "Please enter a valid query") String userQuery) throws SQLException {
         log.info("User query {}", userQuery);
-        String queryResult = queryParserService.parseQuery(userQuery);
+        queryParserService.parseQuery(userQuery);
 
     }
 
