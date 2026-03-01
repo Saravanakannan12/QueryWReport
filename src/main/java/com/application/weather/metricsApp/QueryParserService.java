@@ -1,51 +1,58 @@
 package com.application.weather.metricsApp;
 
-import com.application.weather.metricsApp.Metric.QueryResult;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import dev.langchain4j.model.chat.ChatModel;
 import dev.langchain4j.model.input.Prompt;
 import dev.langchain4j.model.input.PromptTemplate;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-
 
 import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class QueryParserService {
 
     private final ChatModel chatModel;
 
-    private final ObjectMapper objectMapper;
-
     private static final String SYSTEM_PROMPT = """
-                <|begin_of_text|><|start_header_id|>system<|end_header_id|>You are an expert in extracting Natural language. Clearly watch for multiple values in this query.
+                <|begin_of_text|><|start_header_id|>system<|end_header_id|>You are an expert in extracting Natural language and building a POSTGRESQL query. Clearly watch for multiple values in the user query.
                 #Instructions:
-                   - You need to extract the below mentioned four fields from the query
+                   - You need to extract the below mentioned four fields from the user query
                    - If you could not find any of those values, return as null for that value
-                   - You should look for statistical_operations could be average, min, max, sum
-                   - You should look for metrics and it could be something related to weather sensor values namely temperature, wind speed, humudity, rain fall etc.,
-                   - You should look carefully the time_range as it could be in english words(Eg. last 2 weeks, previous week) and numbers as well.
+                   - You should look for statisticalOperations could be average, min, max, sum
+                   - You should look for metricNames and it could be something related to weather sensor values namely temperature, wind speed, humidity, rain fall etc.,
+                   - You should look for sensor information and provide the ids mentioned. If all sensors are mentioned do not send sensor information back
+                   - You should look carefully the timeRange as it could be in english words(Eg. last 2 weeks, previous week) and numbers as well. Convert it to a number of days
                 Extract the following fields from the user query:
-                - statistical_operations
-                - metrics
-                - sensor_ids
-                - time_range
-            
-                Return only JSON.
+                - statisticalOperations
+                - metricNames
+                - sensorIds
+                - timeRange
+                Based on the values fetched, you need to build a working POSTGRESQL query for table sensor_metric with below columns
+                 - sensor_id, metric_name, recorded_time are composite primary keys
+                 - sensor_id column that holds the sensorIds of type NUMERIC
+                 - metric_name column that holds the metricNames of type TEXT
+                 - metric_value column that holds the metricValues for the corresponding metricNames. This column metric_value is of type DOUBLE PRECISION
+                 - recorded_time column that holds the timeRange of type TIMESTAMP
+                Conditions for POSTGRESQL query
+                 - If all sensors mentioned in the userQuery, DO NOT include sensor_id on the POSTGRESQL query
+                 - Carefully observe the timeRange and query it accordingly. If timeRange is not mentioned, YOU should query the latest data
+                 - You should look for statisticalOperations and assign the appropriate aggregate functions om metric_value
+                 - The overall query should be grouped by metric_name
+                YOU should only return the correct working POSTGRESQL query as a string
                 <|eot_id>
                 <|start_header_id|>user<|end_header_id|>Here is the user query: {{userQuery}}<|eot_id|>
                 user"
             """;
 
-    public QueryResult parseQuery(String userQuery) throws JsonProcessingException {
+    public String parseQuery(String userQuery) {
 
         PromptTemplate promptTemplate = PromptTemplate.from(SYSTEM_PROMPT);
         Prompt promptToLLMModel = promptTemplate.apply(Map.of("userQuery", userQuery));
         String formattedJson = chatModel.chat(promptToLLMModel.text());
-
-        return objectMapper.readValue(formattedJson, QueryResult.class);
+        log.info("formatted JSon string {}", formattedJson);
+        return formattedJson;
     }
 }
