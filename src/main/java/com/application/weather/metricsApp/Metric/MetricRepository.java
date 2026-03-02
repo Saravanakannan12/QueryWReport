@@ -1,7 +1,5 @@
-package com.application.weather.metricsApp.Metric.Repository;
+package com.application.weather.metricsApp.Metric;
 
-import com.application.weather.metricsApp.Metric.Metric;
-import com.application.weather.metricsApp.Metric.SensorMetricId;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

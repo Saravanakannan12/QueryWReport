@@ -2,6 +2,7 @@ package com.application.weather.metricsApp.Metric;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 import lombok.Data;
 import org.springframework.stereotype.Component;
 
@@ -15,6 +16,9 @@ public class SensorMetricDTO {
     private Long sensorId;
 
     @NotBlank(message = "Metric name is required")
+    @Pattern(
+            regexp = "^[A-Za-z]+$"
+    )
     private String metricName;
 
     @NotNull(message = "Metric value is required")

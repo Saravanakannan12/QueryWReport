@@ -1,8 +1,5 @@
-package com.application.weather.metricsApp;
+package com.application.weather.metricsApp.Metric;
 
-import com.application.weather.metricsApp.Metric.Metric;
-import com.application.weather.metricsApp.Metric.SensorMetricDTO;
-import com.application.weather.metricsApp.Metric.SensorMetricResponseDTO;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.ReportingPolicy;

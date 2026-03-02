@@ -1,8 +1,5 @@
-package com.application.weather.metricsApp.Metric.Controller;
+package com.application.weather.metricsApp.Metric;
 
-import com.application.weather.metricsApp.Metric.SensorMetricDTO;
-import com.application.weather.metricsApp.Metric.SensorMetricResponseDTO;
-import com.application.weather.metricsApp.Metric.Service.MetricService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

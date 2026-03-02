@@ -1,10 +1,5 @@
-package com.application.weather.metricsApp.Metric.Service;
+package com.application.weather.metricsApp.Metric;
 
-import com.application.weather.metricsApp.Metric.Metric;
-import com.application.weather.metricsApp.Metric.Repository.MetricRepository;
-import com.application.weather.metricsApp.Metric.SensorMetricDTO;
-import com.application.weather.metricsApp.Metric.SensorMetricResponseDTO;
-import com.application.weather.metricsApp.MetricMapper;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -25,6 +20,5 @@ public class MetricService {
         log.info("Saving metrics to Database {}", metricsDTO);
         Metric savedMetric = repository.save(Objects.requireNonNull(metricMapper.toMetricEntity(metricsDTO)));
         return metricMapper.toMetricDTO(savedMetric);
-        //TODO -> Might throw Null Pointer exception
     }
 }
