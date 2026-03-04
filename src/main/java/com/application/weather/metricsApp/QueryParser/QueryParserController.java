@@ -1,6 +1,6 @@
 package com.application.weather.metricsApp.QueryParser;
 
-import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.Valid;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,9 +24,9 @@ public class QueryParserController {
     private final QueryParserService queryParserService;
 
     @GetMapping("/userQuery")
-    public ResponseEntity<List<Map<String, Object>>> parseUserQuery(@RequestBody @NotBlank(message = "Please enter a valid query") String userQuery) {
-        log.info("User query {}", userQuery);
-        return ResponseEntity.ok(queryParserService.parseQuery(userQuery));
+    public ResponseEntity<List<Map<String, Object>>> parseUserQuery(@RequestBody @Valid UserQueryDTO userQueryDTO) {
+        log.info("User query {}", userQueryDTO.getUserQuery());
+        return ResponseEntity.ok(queryParserService.parseQuery(userQueryDTO.getUserQuery()));
     }
 
 }

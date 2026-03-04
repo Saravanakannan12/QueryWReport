@@ -16,11 +16,6 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(new ErrorResponse("Invalid arguments are passed"), HttpStatus.BAD_REQUEST);
     }
 
-    @ExceptionHandler(NullPointerException.class)
-    public ResponseEntity<ErrorResponse> handleNullPointerException() {
-        return new ResponseEntity<>(new ErrorResponse("Null values are passed"), HttpStatus.INTERNAL_SERVER_ERROR);
-    }
-
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<ErrorResponse> handleIllegalArgumentException() {
         return new ResponseEntity<>(new ErrorResponse("Wrong or Invalid values are passed"), HttpStatus.BAD_REQUEST);

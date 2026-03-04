@@ -48,7 +48,9 @@ public class QueryParserService {
                  - Carefully observe the timeRange and query it accordingly. If timeRange is not mentioned, YOU should query the latest data
                  - You should look for statisticalOperations and assign the appropriate aggregate functions on metric_value
                  - The overall query should be grouped by metric_name
-                 - YOU should only return the correct working POSTGRESQL query as a string
+                 - YOU should only return the correct working POSTGRESQL query as a string with the starting word as SELECT and DO NOT have sql in the output
+                 - YOU should strictly have only SELECT statement as OUTPUT when there are enough metrics available to build a query and DO NOT include anything else
+                 - YOU should display the metric names and metrics value. USE SELECT statement accordingly
                  - If the userQuery do not have the values mentioned above, and if it is not related to get sensor metrics, then YOU return only a string "Not a valid prompt"
                 <|eot_id>
                 <|start_header_id|>user<|end_header_id|>Here is the user query: {{userQuery}}<|eot_id|>
@@ -71,8 +73,8 @@ public class QueryParserService {
         }
     }
 
-    private boolean isAValidSQLQuery(String formattedJson) {
-        return !(INVALID_SQL_QUERY.equals(formattedJson));
+    private boolean isAValidSQLQuery(String queryFromLLM) {
+        return !(INVALID_SQL_QUERY.equals(queryFromLLM));
     }
 
 }

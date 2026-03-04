@@ -15,8 +15,8 @@ public class DatabaseConfig {
 
     public List<Map<String, Object>> runSelectStatement(String sqlQuery) {
 
-        String query = sqlQuery.trim().toUpperCase();
-        if (!(query.startsWith("SELECT"))) {
+        //String query = sqlQuery.trim().toUpperCase();
+        if (!(sqlQuery.startsWith("SELECT"))) {
             throw new IllegalArgumentException("Only SELECT statements are allowed.");
         }
 
